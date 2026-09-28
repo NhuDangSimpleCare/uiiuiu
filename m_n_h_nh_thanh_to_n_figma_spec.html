@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figma Design Spec - So Sánh Trạng Thái Nút Thanh Toán</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: #eef2f6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 48px 32px;
+        }
+
+        /* Figma Master Canvas / Canvas Container */
+        .figma-canvas {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        /* Header thanh công cụ Artboard */
+        .artboard-meta {
+            background-color: #1e293b;
+            color: #ffffff;
+            padding: 20px 28px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .artboard-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .artboard-tag {
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #3b82f6;
+            padding: 6px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Khung hiển thị 2 màn hình so sánh (Grid AutoLayout) */
+        .comparison-grid {
+            display: flex;
+            gap: 36px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Cột Artboard của từng phiên bản */
+        .screen-column {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 540px;
+        }
+
+        .column-badge {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-self: flex-start;
+        }
+
+        .badge-current {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+        }
+
+        .badge-proposed {
+            background-color: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        /* Khung giao diện màn hình thanh toán */
+        .payment-device-frame {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            padding: 40px 36px 42px 36px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            position: relative;
+        }
+
+        /* Tiêu đề chính */
+        .screen-header-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 26px;
+            letter-spacing: 0.2px;
+            text-transform: uppercase;
+        }
+
+        .spec-box {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+        }
+
+        .box-heading {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.2px;
+        }
+
+        /* Nội dung giỏ hàng */
+        .order-summary-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .order-line-item {
+            font-size: 14.5px;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        .order-divider-line {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 10px 0 12px 0;
+        }
+
+        .order-total-sum {
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* Nhập liệu thông tin thẻ */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #334155;
+        }
+
+        .mock-input-field {
+            width: 100%;
+            height: 42px;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .mock-input-field.filled {
+            background-color: #ffffff;
+            border-color: #94a3b8;
+            color: #0f172a;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .placeholder-text {
+            color: #94a3b8;
+        }
+
+        .action-container {
+            position: relative;
+            margin-top: 24px;
+        }
+
+        /* 1. Nút Bug hiện tại (Vẫn active màu xanh đậm khi chưa nhập) */
+        .btn-bug-active {
+            width: 100%;
+            height: 48px;
+            background-color: #0d6efd;
+            color: #ffffff;
+            font-size: 15.5px;
+            font-weight: 700;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        /* Đường chỉ báo màu đỏ sang bên phải */
+        .red-pointer-indicator {
+            position: absolute;
+            right: -34px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 34px;
+            height: 2px;
+            background-color: #dc2626;
+        }
+
+        /* Chú thích lỗi màu đỏ */
+        .bug-annotation {
+            margin-top: 14px;
+            text-align: right;
+            color: #dc2626;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* 2. Trạng thái Đề xuất 1: Nút Vô hiệu hóa (Disabled) khi chưa nhập số thẻ */
+        .btn-disabled-state {
+            width: 100%;
+            height: 48px;
+            background-color: #e2e8f0;
+            color: #94a3b8;
+            font-size: 15px;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            cursor: not-allowed;
+        }
+
+        /* 3. Trạng thái Đề xuất 2: Nút Kích hoạt (Active) kèm số tiền tính toán khi đã nhập thẻ */
+        .btn-active-state {
+            width: 100%;
+            height: 48px;
+            background-color: #0d6efd;
+            color: #ffffff;
+            font-size: 15.5px;
+            font-weight: 700;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(13, 110, 253, 0.25);
+        }
+
+        /* Nhãn chú thích trạng thái nút trong Figma */
+        .state-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .state-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-gray { background-color: #94a3b8; }
+        .dot-green { background-color: #16a34a; }
+
+        .proposed-buttons-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px dashed #cbd5e1;
+        }
+
+        .status-badge-tag {
+            font-size: 12px;
+            color: #16a34a;
+            font-weight: 600;
+            text-align: right;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="figma-canvas" id="MasterCanvas">
+
+        <!-- Banner thông tin thiết kế -->
+        <div class="artboard-meta">
+            <div>
+                <div class="artboard-title">SPEC BẢN VẼ: MÀN HÌNH THANH TOÁN (UI BUTTON STATES)</div>
+                <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">Dành riêng để đồng bộ và chuyển đổi thành Components trên Figma</div>
+            </div>
+            <div class="artboard-tag">AutoLayout Ready</div>
+        </div>
+
+        <div class="comparison-grid">
+
+            <!-- CỘT 1: BẢN VẼ HIỆN TẠI (TÁI HIỆN CHÍNH XÁC BUG THEO ẢNH GỐC) -->
+            <div class="screen-column">
+                <div class="column-badge badge-current">1. Hiện tại (Lỗi UI / Bug Spec)</div>
+                
+                <div class="payment-device-frame" id="FrameCurrentBug">
+                    <div class="screen-header-title">MÀN HÌNH THANH TOÁN</div>
+
+                    <!-- Tóm tắt đơn hàng -->
+                    <div class="spec-box">
+                        <div class="box-heading">TÓM TẮT ĐƠN HÀNG</div>
+                        <div class="order-summary-list">
+                            <div class="order-line-item">- Sản phẩm 1: 500.000 đ</div>
+                            <div class="order-line-item">- Sản phẩm 2: 300.000 đ</div>
+                        </div>
+                        <div class="order-divider-line"></div>
+                        <div class="order-total-sum">Tổng tiền: 800.000 đ</div>
+                    </div>
+
+                    <!-- Thông tin thẻ: Chưa nhập -->
+                    <div class="spec-box">
+                        <div class="box-heading">THÔNG TIN THẺ</div>
+                        <div class="input-group">
+                            <div class="input-label">Số thẻ</div>
+                            <div class="mock-input-field">
+                                <span class="placeholder-text">Nhập số thẻ...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nút tính toán / thanh toán: Bị lỗi luôn sáng màu (Active) -->
+                    <div class="action-container">
+                        <div class="btn-bug-active">THANH TOÁN</div>
+                        <div class="red-pointer-indicator"></div>
+                    </div>
+
+                    <!-- Chú thích lỗi đỏ -->
+                    <div class="bug-annotation">
+                        * LỖI UI: Nút vẫn sáng màu (Active) dù chưa nhập thẻ *
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT 2: BẢN VẼ ĐỀ XUẤT (2 TRẠNG THÁI NÚT CHUẨN UX FIGMA) -->
+            <div class="screen-column">
+                <div class="column-badge badge-proposed">2. Đề xuất chuẩn (2 Trạng Thái Nút)</div>
+                
+                <div class="payment-device-frame" id="FrameProposedStates">
+                    <div class="screen-header-title">MÀN HÌNH THANH TOÁN</div>
+
+                    <!-- Tóm tắt đơn hàng -->
+                    <div class="spec-box">
+                        <div class="box-heading">TÓM TẮT ĐƠN HÀNG</div>
+                        <div class="order-summary-list">
+                            <div class="order-line-item">- Sản phẩm 1: 500.000 đ</div>
+                            <div class="order-line-item">- Sản phẩm 2: 300.000 đ</div>
+                        </div>
+                        <div class="order-divider-line"></div>
+                        <div class="order-total-sum">Tổng tiền: 800.000 đ</div>
+                    </div>
+
+                    <!-- Khung mô phỏng 2 biến thể nút thanh toán / tính toán -->
+                    <div class="proposed-buttons-wrapper">
+                        
+                        <!-- Trạng thái A: Disabled khi trống ô nhập -->
+                        <div>
+                            <div class="state-label">
+                                <span class="state-dot dot-gray"></span>
+                                TRẠNG THÁI 1: CHƯA NHẬP THẺ (DISABLED)
+                            </div>
+                            <div class="spec-box" style="margin-bottom: 12px; padding: 12px 16px;">
+                                <div class="input-group">
+                                    <div class="input-label" style="font-size: 13px;">Số thẻ (Trống)</div>
+                                    <div class="mock-input-field" style="height: 38px;">
+                                        <span class="placeholder-text">Nhập số thẻ...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-disabled-state">THANH TOÁN</div>
+                        </div>
+
+                        <!-- Trạng thái B: Active và gắn kèm số tiền cần thanh toán -->
+                        <div style="margin-top: 10px;">
+                            <div class="state-label">
+                                <span class="state-dot dot-green"></span>
+                                TRẠNG THÁI 2: ĐÃ NHẬP ĐỦ THẺ (ACTIVE / CÓ TỔNG TIỀN)
+                            </div>
+                            <div class="spec-box" style="margin-bottom: 12px; padding: 12px 16px;">
+                                <div class="input-group">
+                                    <div class="input-label" style="font-size: 13px;">Số thẻ (Hợp lệ)</div>
+                                    <div class="mock-input-field filled" style="height: 38px;">
+                                        9704 2201 •••• 6868
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-active-state">
+                                <span>THANH TOÁN</span>
+                                <span>• 800.000 đ</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="status-badge-tag">✓ Đạt chuẩn UX Checklist: Feedback trạng thái rõ ràng</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
